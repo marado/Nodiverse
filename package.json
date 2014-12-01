@@ -1,0 +1,22 @@
+{
+  "name": "nodiverse",
+  "version": "0.0.1",
+  "description": "3D Universe library",
+  "main": "index.js",
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do nodejs $t; done"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marado/Nodiverse.git"
+  },
+  "keywords": [
+    "3D",
+    "universe",
+    "spatial",
+    "data-structure"
+  ],
+  "author": "Marcos Marado <mindboosternoori@gmail.com>",
+  "license": "GPL",
+  "readmeFilename": "README.md"
+}
