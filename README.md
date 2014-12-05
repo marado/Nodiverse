@@ -24,8 +24,7 @@ Nodiverse is a 3D Universe generator Node.js library.
 
 ### Installation
 
-Whenever this is in a state of any kind of usefulness (probably 0.1.0) it will
-be added to npm. At that time, you'll be able to:
+The latest stable version of Nodiverse can be installed via npm:
 ```
     npm install nodiverse 
 ```
