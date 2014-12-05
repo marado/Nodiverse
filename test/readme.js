@@ -6,7 +6,7 @@ var nodiverse = require('../');
     var myverse = nodiverse();            // my universe object creation
     // let's create a place... 
     // let's say, a room in the center of the universe, with a passage towards north and another towards southeast
-    myverse.create([0,0,0], myverse.N & myverse.SE);
+    myverse.create([0,0,0], myverse.N + myverse.SE);
     // let's get a local copy of that place, maybe to change it
     var myplace = myverse.get([0,0,0]);
     myplace.name = "clearing";
