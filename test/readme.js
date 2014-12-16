@@ -17,7 +17,7 @@ var nodiverse = require('../');
     myverse.nuke([0,0,0]);
     // and if we want to update the universe properties themselves:
     myverse.geometry="plane";
-    myverse.default=[0,0,0];
+    myverse.entrypoint=[0,0,0];
     // finally, it might be useful to be able to see a visual representation of the universe
     console.log(myverse.asciimap());
 })();

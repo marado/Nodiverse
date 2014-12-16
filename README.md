@@ -15,7 +15,7 @@ Nodiverse is a 3D Universe generator Node.js library.
 * 0.4.0:
  - non-mandatory initial parameters:
   - geometry (plane, sphere, ...)
-  - default place
+  - default place (entrypoint)
  - deal properly with defined geometry
 * 1.0.0:
  - I want to see this module adopted and used in production before I can decide
@@ -48,7 +48,7 @@ Since nothing of this exists yet, this section is roughly the development plan:
     myverse.nuke([0,0,0]);
     // and if we want to update the universe properties themselves:
     myverse.geometry="plane";
-    myverse.default=[0,0,0];
+    myverse.entrypoint=[0,0,0];
     // finally, it might be useful to be able to see a visual representation of the universe
     console.log(myverse.asciimap());
 ```
