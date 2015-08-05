@@ -74,7 +74,7 @@ not. But when you have a passage to some place that exists, then that place
 also needs a passage to you, in order to maintain universe consistency. In
 other words: if you can go north from here, you can go south from there.
 
-At the moment (version 0.0.2) That consistency isn't being garanteed by
+At the moment (version 0.0.3) That consistency isn't being garanteed by
 Nodiverse. The module is still useable as it is, but that means you *must* make
 the Universe consistent on the client's side. I mean, you can still do this:
 ```
@@ -93,7 +93,7 @@ assume you don't want that passage, so you should, instead, do this:
 ```
 ### Nodiverse in action
 
-This is planed to be used on:
+This is being used on:
 * TalkerNode - https://github.com/marado/TalkerNode
 
 If you want to add to this list, just submit a change!

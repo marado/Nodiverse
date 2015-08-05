@@ -143,6 +143,50 @@ nodiverse.prototype.asciimap = function() {
     return "";
 }
 
+/* given a place, return array of neighbours */
+nodiverse.prototype.get_neighbours = function(place) {
+    // initial validations
+    if (typeof place === 'undefined') return [];
+    if (!this.validate_passages(place.passages)) return [];
+    if (place.passages == 0) return [];
+
+    // figuring out what our passages are
+    var passages = [];
+    for (var i = 0; i < 26; i++) {
+        if (place.passages & Math.pow(2, i)) {
+            // there's a passage on i
+            if (Math.pow(2, i) == this.NW ) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.N  ) passages.push(this.get([place.coords[0] + 0,place.coords[1] + 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.NE ) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.W  ) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 0,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.E  ) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 0,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.SW ) passages.push(this.get([place.coords[0] - 1,place.coords[1] - 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.S  ) passages.push(this.get([place.coords[0] + 0,place.coords[1] - 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.SE ) passages.push(this.get([place.coords[0] + 1,place.coords[1] - 1,place.coords[2] + 0]));
+            if (Math.pow(2, i) == this.U  ) passages.push(this.get([place.coords[0] + 0,place.coords[1] + 0,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.UNW) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.UN ) passages.push(this.get([place.coords[0] + 0,place.coords[1] + 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.UNE) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.UW ) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 0,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.UE ) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 0,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.USW) passages.push(this.get([place.coords[0] - 1,place.coords[1] - 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.US ) passages.push(this.get([place.coords[0] + 0,place.coords[1] - 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.USE) passages.push(this.get([place.coords[0] + 1,place.coords[1] - 1,place.coords[2] + 1]));
+            if (Math.pow(2, i) == this.D  ) passages.push(this.get([place.coords[0] + 0,place.coords[1] + 0,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DNW) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 1,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DN ) passages.push(this.get([place.coords[0] + 0,place.coords[1] + 1,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DNE) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 1,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DW ) passages.push(this.get([place.coords[0] - 1,place.coords[1] + 0,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DE ) passages.push(this.get([place.coords[0] + 1,place.coords[1] + 0,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DSW) passages.push(this.get([place.coords[0] - 1,place.coords[1] - 1,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DS ) passages.push(this.get([place.coords[0] + 0,place.coords[1] - 1,place.coords[2] - 1]));
+            if (Math.pow(2, i) == this.DSE) passages.push(this.get([place.coords[0] + 1,place.coords[1] - 1,place.coords[2] - 1]));
+        }
+    }
+    passages = passages.filter(function(p) { return (p !== null); });
+    return passages;
+}
+
 module.exports = function() {
     return new nodiverse();
 }
