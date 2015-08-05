@@ -36,7 +36,8 @@ Since nothing of this exists yet, this section is roughly the development plan:
     var nodiverse = require('nodiverse'); // library load
     var myverse = nodiverse();            // my universe object creation
     // let's create a place... 
-    // let's say, a room in the center of the universe, with a passage towards north and another towards southeast
+    // let's say, a room in the center of the universe, with a
+    // passage towards north and another towards southeast
     myverse.create([0,0,0], myverse.N + myverse.SE);
     // let's get a local copy of that place, maybe to change it
     var myplace = myverse.get([0,0,0]);
@@ -44,12 +45,15 @@ Since nothing of this exists yet, this section is roughly the development plan:
     myplace.description = "This is a clearing.";
     // let's update the universe with this place's changes
     myverse.update(myplace);
+    // let's see where to can we go from here (through the passages)
+    myverse.get_neighbours(myplace);
     // we can, of course, also destroy a place
     myverse.nuke([0,0,0]);
     // and if we want to update the universe properties themselves:
     myverse.geometry="plane";
     myverse.entrypoint=[0,0,0];
-    // finally, it might be useful to be able to see a visual representation of the universe
+    // finally, it might be useful to be able to see a visual representation
+    // of the universe
     console.log(myverse.asciimap());
 ```
 
@@ -94,6 +98,6 @@ assume you don't want that passage, so you should, instead, do this:
 ### Nodiverse in action
 
 This is being used on:
-* TalkerNode - https://github.com/marado/TalkerNode
+* TalkerNode - <https://github.com/marado/TalkerNode>
 
 If you want to add to this list, just submit a change!
