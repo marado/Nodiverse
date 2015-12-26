@@ -7,12 +7,14 @@ Nodiverse is a 3D Universe generator Node.js library.
 ### Roadmap
 
 * 0.1.0:
- - get a consistent and maleable universe
+ - get a consistent universe
 * 0.2.0:
  - asciimap
 * 0.3.0:
- - universe is an octree (see https://www.npmjs.org/package/octree )
+ - get a maleable universe
 * 0.4.0:
+ - universe is an octree (see https://www.npmjs.org/package/octree )
+* 0.5.0:
  - non-mandatory initial parameters:
   - geometry (plane, sphere, ...)
   - default place (entrypoint)
@@ -31,7 +33,6 @@ The latest stable version of Nodiverse can be installed via npm:
 
 ### Usage
 
-Since nothing of this exists yet, this section is roughly the development plan:
 ```
     var nodiverse = require('nodiverse'); // library load
     var myverse = nodiverse();            // my universe object creation
@@ -69,6 +70,15 @@ Eg (2D):
    W+E    [0,0,0] [1,0,0]
     S
 ```
+
+#### Universe maleability
+
+A Nodiverse should be maleable, but -- for now -- every Nodiverse is a
+3-dimensional Euclidean space. While there are no immediate plans to support
+n-dimensional universes (meaning: universes with less or more than three
+dimensions), there should be support to other 3-dimensional universes. For
+instance: supporting a spheric universe would be a very user-friendly way of
+representing a planet.
 
 #### Universe consistency
 
