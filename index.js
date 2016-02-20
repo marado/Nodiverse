@@ -36,25 +36,72 @@ nodiverse.prototype.create = function(coords, passages) {
         (this.get(coords) === null)
     ) {
         this.places.push({"coords":coords, "passages":passages});
+
         // Affect neighbours' passages. For each existing neighbour:
         // * if they have a passage to us and we don't have one to them, close it
         // * if they don't have a passage to us but we have one to them, open it
-        // NW
-        var neighbour = this.get([coords[0]+1, coords[1]-1, coords[2]]);
-        if ((neighbour !== null) &&
-           (neighbour.passages & this.SE) !== (passages & this.NW)
-        ) {
-            if (passages & this.NW) {
-                neighbour.passages += this.SE;
-            } else {
-                neighbour.passages -= this.SE;
+
+        var opposites = [
+            [this.NW,this.SE],[this.N,this.S],[this.NE,this.SW],[this.W,this.E],[this.E,this.W],[this.SW,this.NE],[this.S,this.N],[this.SE,this.NW],
+            [this.U,this.D],[this.UNW,this.DSE],[this.UN,this.DS],[this.UNE,this.DSW],[this.UW,this.DE],[this.UE,this.DW],[this.USW,this.DNE],[this.US,this.DN],[this.USE,this.DNW],
+            [this.D,this.U],[this.DNW,this.USE],[this.DN,this.US],[this.DNE,this.USW],[this.DW,this.UE],[this.DE,this.UW],[this.DSW,this.UNE],[this.DS,this.UN],[this.DSE,this.UNW]
+        ];
+
+        for (var opIdx = 0; opIdx < opposites.length; opIdx++) {
+            var neighbourCoords = this.shift_coords(coords,opposites[opIdx][0]);
+            var neighbour = this.get(neighbourCoords);
+            if ((neighbour !== null) && ((passages & opposites[opIdx][0]) != (neighbour.passages & opposites[opIdx][1]))) {
+                // either we should have a passage or the neighbour shouldn't
+                if (passages & opposites[opIdx][0]) {
+                    neighbour.passages += opposites[opIdx][1];
+                } else {
+                    neighbour.passages -= opposites[opIdx][1];
+                }
+                this.update(neighbour);
             }
-            this.update(neighbour);
         }
-        // TODO: rest of coordinates
+
         return true;
     }
     return false;
+}
+
+/* given a set of coordinates and a direction, return the resulting coordinates */
+nodiverse.prototype.shift_coords = function(coords,direction) {
+    var shifted = Object.create(coords);
+
+    // E vs W
+    if ((direction & this.E) || (direction & this.NE) || (direction & this.SE) ||
+            (direction & this.UE) || (direction & this.UNE) || (direction & this.USE) ||
+            (direction & this.DE) || (direction & this.DNE) || (direction & this.DSE)) {
+        shifted[0] = shifted[0] + 1;
+    } else if ((direction & this.W) || (direction & this.NW) || (direction & this.SW) ||
+            (direction & this.UW) || (direction & this.UNW) || (direction & this.USW) ||
+            (direction & this.DW) || (direction & this.DNW) || (direction & this.DSW)) {
+        shifted[0] = shifted[0] - 1;
+    }
+
+    // N vs S
+    if ((direction & this.N) || (direction & this.NW) || (direction & this.NE) ||
+            (direction & this.UN) || (direction & this.UNW) || (direction & this.UNE) ||
+            (direction & this.DN) || (direction & this.DNW) || (direction & this.DNE)) {
+        shifted[1] = shifted[1] + 1;
+    } else if ((direction & this.N) || (direction & this.NW) || (direction & this.NE) ||
+            (direction & this.UN) || (direction & this.UNW) || (direction & this.UNE) ||
+            (direction & this.DN) || (direction & this.DNW) || (direction & this.DNE)) {
+        shifted[1] = shifted[1] - 1;
+    }
+
+    // U vs D
+    if (direction >= Math.pow(2, 8)) {
+        if (direction >= Math.pow(2,17)) {
+            shifted[2] = shifted[2] - 1;
+        } else {
+            shifted[2] = shifted[2] + 1;
+        }
+    }
+
+    return shifted;
 }
 
 /* see if coords are valid */
@@ -113,7 +160,7 @@ nodiverse.prototype.update = function(place) {
             this.places[p].coords[2] === place.coords[2]
         ) {
             // This is it - the place we want to update
-            // TODO: check the neighbours first for inconsistencies on passages
+            // TODO: check the neighbours first for inconsistencies on passages -- consistency
             this.places[p] = place;
             return true;
         }

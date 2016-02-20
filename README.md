@@ -88,7 +88,7 @@ not. But when you have a passage to some place that exists, then that place
 also needs a passage to you, in order to maintain universe consistency. In
 other words: if you can go north from here, you can go south from there.
 
-At the moment (version 0.0.3) That consistency isn't being garanteed by
+At the moment (version 0.0.4) That consistency isn't being garanteed by
 Nodiverse. The module is still useable as it is, but that means you *must* make
 the Universe consistent on the client's side. I mean, you can still do this:
 ```

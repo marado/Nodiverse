@@ -6,9 +6,14 @@ var nodiverse = require('../');
     var myverse = nodiverse();            // my universe object creation
     // let's create a place... 
     // let's say, a room in the center of the universe, with a passage towards north and another towards southeast
-    myverse.create([0,0,0], myverse.N + myverse.SE);
+    if (!myverse.create([0,0,0], myverse.N + myverse.SE))
+        throw Error("cannot create a place");
+
     // let's get a local copy of that place, maybe to change it
     var myplace = myverse.get([0,0,0]);
+
+    if (myplace === null) throw Error("place wasn't properly created, or retrieved");
+
     myplace.name = "clearing";
     myplace.description = "This is a clearing.";
     // let's update the universe with this place's changes
