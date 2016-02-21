@@ -88,23 +88,18 @@ not. But when you have a passage to some place that exists, then that place
 also needs a passage to you, in order to maintain universe consistency. In
 other words: if you can go north from here, you can go south from there.
 
-At the moment (version 0.0.4) That consistency isn't being garanteed by
-Nodiverse. The module is still useable as it is, but that means you *must* make
-the Universe consistent on the client's side. I mean, you can still do this:
-```
-    myverse.create([0,0,0],myverse.N); // place A
-    myverse.create([0,1,0],myverse.N); // place B
-```
-But if you do so, you'll be in an inconsistent state (you can go from A to B,
-but not from B to A). Since you're not creating B with a passage to A we'll
-assume you don't want that passage, so you should, instead, do this:
-```
-    myverse.create([0,0,0],myverse.N); // place A
-    var a = myverse.get([0,0,0]);
-    a.passages -= myverse.N;
-    myverse.update(a);
-    myverse.create([0,1,0],myverse.N); // place B
-```
+When creating a place, the passages marked on that place are the ones which are
+to be maintained. That means that if a place is created next no another one,
+weather the newly created place has a passage to its neighbour or not mandates
+the final result: passages on neighbours are either created or destroyed to
+accomodate it.
+
+At the moment (version 0.0.4) That consistency is still not being garanteed by
+Nodiverse, because universe consistency isn't being verified on updates. That is
+something that is planned to be fixed on Nodiverse 0.1.0. Until then, please
+remember to manually maintain your universe consistency each time you update a
+place.
+
 ### Nodiverse in action
 
 This is being used on:
