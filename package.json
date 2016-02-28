@@ -1,6 +1,6 @@
 {
   "name": "nodiverse",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "3D Universe library",
   "main": "index.js",
   "scripts": {

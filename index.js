@@ -35,35 +35,39 @@ nodiverse.prototype.create = function(coords, passages) {
         this.validate_passages(passages) &&
         (this.get(coords) === null)
     ) {
+        this.update_neighbours(coords, passages);
         this.places.push({"coords":coords, "passages":passages});
-
-        // Affect neighbours' passages. For each existing neighbour:
-        // * if they have a passage to us and we don't have one to them, close it
-        // * if they don't have a passage to us but we have one to them, open it
-
-        var opposites = [
-            [this.NW,this.SE],[this.N,this.S],[this.NE,this.SW],[this.W,this.E],[this.E,this.W],[this.SW,this.NE],[this.S,this.N],[this.SE,this.NW],
-            [this.U,this.D],[this.UNW,this.DSE],[this.UN,this.DS],[this.UNE,this.DSW],[this.UW,this.DE],[this.UE,this.DW],[this.USW,this.DNE],[this.US,this.DN],[this.USE,this.DNW],
-            [this.D,this.U],[this.DNW,this.USE],[this.DN,this.US],[this.DNE,this.USW],[this.DW,this.UE],[this.DE,this.UW],[this.DSW,this.UNE],[this.DS,this.UN],[this.DSE,this.UNW]
-        ];
-
-        for (var opIdx = 0; opIdx < opposites.length; opIdx++) {
-            var neighbourCoords = this.shift_coords(coords,opposites[opIdx][0]);
-            var neighbour = this.get(neighbourCoords);
-            if ((neighbour !== null) && ((passages & opposites[opIdx][0]) != (neighbour.passages & opposites[opIdx][1]))) {
-                // either we should have a passage or the neighbour shouldn't
-                if (passages & opposites[opIdx][0]) {
-                    neighbour.passages += opposites[opIdx][1];
-                } else {
-                    neighbour.passages -= opposites[opIdx][1];
-                }
-                this.update(neighbour);
-            }
-        }
-
         return true;
     }
     return false;
+}
+
+/* update neighbours' passages, taking the given place as the one with the "right passages" */
+
+nodiverse.prototype.update_neighbours = function(coords, passages) {
+    // Affect neighbours' passages. For each existing neighbour:
+    // * if they have a passage to us and we don't have one to them, close it
+    // * if they don't have a passage to us but we have one to them, open it
+
+    var opposites = [
+        [this.NW,this.SE],[this.N,this.S],[this.NE,this.SW],[this.W,this.E],[this.E,this.W],[this.SW,this.NE],[this.S,this.N],[this.SE,this.NW],
+        [this.U,this.D],[this.UNW,this.DSE],[this.UN,this.DS],[this.UNE,this.DSW],[this.UW,this.DE],[this.UE,this.DW],[this.USW,this.DNE],[this.US,this.DN],[this.USE,this.DNW],
+        [this.D,this.U],[this.DNW,this.USE],[this.DN,this.US],[this.DNE,this.USW],[this.DW,this.UE],[this.DE,this.UW],[this.DSW,this.UNE],[this.DS,this.UN],[this.DSE,this.UNW]
+    ];
+
+    for (var opIdx = 0; opIdx < opposites.length; opIdx++) {
+        var neighbourCoords = this.shift_coords(coords,opposites[opIdx][0]);
+        var neighbour = this.get(neighbourCoords);
+        if ((neighbour !== null) && ((passages & opposites[opIdx][0]) != (neighbour.passages & opposites[opIdx][1]))) {
+            // either we should have a passage or the neighbour shouldn't
+            if (passages & opposites[opIdx][0]) {
+                neighbour.passages += opposites[opIdx][1];
+            } else {
+                neighbour.passages -= opposites[opIdx][1];
+            }
+            this.update(neighbour);
+        }
+    }
 }
 
 /* given a set of coordinates and a direction, return the resulting coordinates */
@@ -160,7 +164,7 @@ nodiverse.prototype.update = function(place) {
             this.places[p].coords[2] === place.coords[2]
         ) {
             // This is it - the place we want to update
-            // TODO: check the neighbours first for inconsistencies on passages -- consistency
+            this.update_neighbours(place.coords, place.passages);
             this.places[p] = place;
             return true;
         }

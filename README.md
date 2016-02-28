@@ -6,8 +6,6 @@ Nodiverse is a 3D Universe generator Node.js library.
 
 ### Roadmap
 
-* 0.1.0:
- - get a consistent universe
 * 0.2.0:
  - asciimap
 * 0.3.0:
@@ -93,12 +91,6 @@ to be maintained. That means that if a place is created next no another one,
 weather the newly created place has a passage to its neighbour or not mandates
 the final result: passages on neighbours are either created or destroyed to
 accomodate it.
-
-At the moment (version 0.0.4) That consistency is still not being garanteed by
-Nodiverse, because universe consistency isn't being verified on updates. That is
-something that is planned to be fixed on Nodiverse 0.1.0. Until then, please
-remember to manually maintain your universe consistency each time you update a
-place.
 
 ### Nodiverse in action
 
