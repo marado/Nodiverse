@@ -4,24 +4,6 @@
 
 Nodiverse is a 3D Universe generator Node.js library.
 
-### Roadmap
-
-* 0.2.0:
- - asciimap
-* 0.3.0:
- - get a maleable universe
-* 0.4.0:
- - universe is an octree (see https://www.npmjs.org/package/octree )
-* 0.5.0:
- - non-mandatory initial parameters:
-  - geometry (plane, sphere, ...)
-  - default place (entrypoint)
- - deal properly with defined geometry
-* 1.0.0:
- - I want to see this module adopted and used in production before I can decide
-   about it's stability and feature set. Only then I'll be able to know what
-   can be considered a final (1.0.0) version
-
 ### Installation
 
 The latest stable version of Nodiverse can be installed via npm:
