@@ -154,32 +154,65 @@
  */
 
 module.exports = function() {
-    this.drawmap = function(dimensions, size, center) {
-        if (dimensions == 2) return draw2Dmap(size, center);
-        if (dimensions == 3) return draw3Dmap(size, center);
+    this.drawmap = function(nodiverse, dimensions, size, center) {
+        if (dimensions == 2) return draw2Dmap(nodiverse, size, center);
+        if (dimensions == 3) return draw3Dmap(nodiverse, size, center);
         return "Can't draw a map with that number of dimensions...";
     }
     
-    this.draw2Dmap = function(size,center) {
+    this.draw2Dmap = function(nodiverse,size,center) {
         // TODO: validate input:
         // * size is [x-size,y-size]
         // * x-size and y-size are odd ints
-        // * center is a set of coordinates
+	if (!nodiverse.validate_coords(center)) return false;
         // TODO: actually implement the draw2Dmap function.
         // This will invoke draw2Dtile(coords) the relevant ammount of times, and
         // stitch their results into a map.
-        // For now, return only the center tile.
-        return draw2Dtile(center);
+        // For now, return only the center tile (as if size was [1,1])
+        var tile = draw2Dtile(nodiverse,center);
+	var asciitile = tile[0]+"\n"+tile[1]+"\n"+tile[2]+"\n";
+	return asciitile;
     }
     
-    this.draw2Dtile = function(coords) {
-        // TODO: actually implement this
-        return "This function isn't implemented yet.";
+    // returns an array with each of the three relevant lines (north, center, south)
+    // doesn't show what's east of the point (including passages), to ease glueing
+    this.draw2Dtile = function(nodiverse,coords) {
+	if (!nodiverse.validate_coords(coords)) return false;
+	var tile = nodiverse.get(coords); 
+	// don't assume there's an actual place at these coordinates
+	if (tile === null) return ["  ","  ","   "];
+	var asciitile = [];
+	if (tile.passages & nodiverse.NW) {
+		asciitile[0] = "\ ";
+	} else {
+		asciitile[0] = "  ";
+	}
+	if (tile.passages & nodiverse.N) {
+		asciitile[0] += "|";
+	} else {
+		asciitile[0] += " ";
+	}
+	if (tile.passages & nodiverse.W) {
+		asciitile[1] = "- "+tile.name.substring(0,1);
+	} else {
+		asciitile[1] = "  "+tile.name.substring(0,1);
+	}
+	if (tile.passages & nodiverse.SW) {
+		asciitile[2] = "/ ";
+	} else {
+		asciitile[2] = "  ";
+	}
+	if (tile.passages & nodiverse.S) {
+		asciitile[3] += "|";
+	} else {
+		asciitile[3] += " ";
+	}
+	return asciitile;
     }
     
-    this.draw3Dmap = function(size,center) {
+    this.draw3Dmap = function(nodiverse,size,center) {
         // TODO: implement 3D map. 
         // Until then, draw a 2D map instead
-        return draw2Dmap(size,center);
+        return draw2Dmap(nodiverse,size,center);
     }
 }
