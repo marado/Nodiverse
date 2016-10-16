@@ -200,7 +200,7 @@ module.exports = function() {
 	// don't assume there's an actual place at these coordinates
         if (typeof tile === 'undefined' || tile === null) return ["  ","  ","   "];
 	var asciitile = [];
-	if (typeof tile.name === 'undefined') tile.name = "X";
+	if (typeof tile.name !== 'string') tile.name = "X";
 	if (tile.passages & nodiverse.NW) {
 		asciitile[0] = "\ ";
 	} else {
