@@ -60,11 +60,18 @@ nodiverse.prototype.update_neighbours = function(coords, passages) {
     for (var opIdx = 0; opIdx < opposites.length; opIdx++) {
         var neighbourCoords = this.shift_coords(coords,opposites[opIdx][0]);
         var neighbour = this.get(neighbourCoords);
-        if ((neighbour !== null) && ((passages & opposites[opIdx][0]) != (neighbour.passages & opposites[opIdx][1]))) {
-            // either we should have a passage or the neighbour shouldn't
-            if (passages & opposites[opIdx][0]) {
+        if (
+		(neighbour !== null) && (
+			((passages & opposites[opIdx][0]) === opposites[opIdx][0]) !=
+			((neighbour.passages & opposites[opIdx][1]) === opposites[opIdx][1])
+		)
+	) {
+	    // one of us has a broken passage
+            if ((passages & opposites[opIdx][0]) === opposites[opIdx][0])  {
+		// we have a passage, so the neighbour should have one to us
                 neighbour.passages += opposites[opIdx][1];
             } else {
+		// we don't have a passage, so the neighbour shouldn't have one to us
                 neighbour.passages -= opposites[opIdx][1];
             }
             this.update(neighbour);
