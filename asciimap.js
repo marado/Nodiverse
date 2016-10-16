@@ -169,9 +169,9 @@ module.exports = function() {
 	if (!nodiverse.validate_coords(center)) return false;
 
 	var maparray = [];
-	for (var x=center[0]-(Math.floor(size[0]/2));x<=center[0]+(Math.floor(size[0]/2));x++) {
+	for (var y=center[1]-(Math.floor(size[1]/2));y<=center[1]+(Math.floor(size[1]/2));y++) {
 		var line = [];
-		for (var y=center[1]-(Math.floor(size[1]/2));y<=center[1]+(Math.floor(size[1]/2));y++) {
+		for (var x=center[0]-(Math.floor(size[0]/2));x<=center[0]+(Math.floor(size[0]/2));x++) {
 			line.push(draw2Dtile(nodiverse,[x,y,center[2]]));
 		}
 		maparray.push(line);
@@ -198,33 +198,33 @@ module.exports = function() {
 	if (!nodiverse.validate_coords(coords)) return false;
 	var tile = nodiverse.get(coords); 
 	// don't assume there's an actual place at these coordinates
-        if (typeof tile === 'undefined' || tile === null) return ["  ","  ","   "];
+        if (typeof tile === 'undefined' || tile === null) return ["    ","    ","    "];
 	var asciitile = [];
 	if (typeof tile.name !== 'string') tile.name = "X";
-	if (tile.passages & nodiverse.NW) {
-		asciitile[0] = "\ ";
+	if ((tile.passages & nodiverse.NW) === nodiverse.NW) {
+		asciitile[0] = "\\ ";
 	} else {
 		asciitile[0] = "  ";
 	}
-	if (tile.passages & nodiverse.N) {
-		asciitile[0] += "|";
+	if ((tile.passages & nodiverse.N) === nodiverse.N) {
+		asciitile[0] += "| ";
 	} else {
-		asciitile[0] += " ";
+		asciitile[0] += "  ";
 	}
-	if (tile.passages & nodiverse.W) {
-		asciitile[1] = "- "+tile.name.substring(0,1);
+	if ((tile.passages & nodiverse.W) === nodiverse.W) {
+		asciitile[1] = "- "+tile.name.substring(0,1) + " ";
 	} else {
-		asciitile[1] = "  "+tile.name.substring(0,1);
+		asciitile[1] = "  "+tile.name.substring(0,1) + " ";
 	}
-	if (tile.passages & nodiverse.SW) {
+	if ((tile.passages & nodiverse.SW) === nodiverse.SW) {
 		asciitile[2] = "/ ";
 	} else {
 		asciitile[2] = "  ";
 	}
-	if (tile.passages & nodiverse.S) {
-		asciitile[3] += "|";
+	if ((tile.passages & nodiverse.S) === nodiverse.S) {
+		asciitile[3] += "| ";
 	} else {
-		asciitile[3] += " ";
+		asciitile[3] += "  ";
 	}
 	return asciitile;
     }
