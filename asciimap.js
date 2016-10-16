@@ -160,18 +160,36 @@ module.exports = function() {
         return "Can't draw a map with that number of dimensions...";
     }
     
+    // returns false if can't draw, an ascii drawing otherwise
     this.draw2Dmap = function(nodiverse,size,center) {
-        // TODO: validate input:
-        // * size is [x-size,y-size]
-        // * x-size and y-size are odd ints
+	if (!(typeof size === 'object' && size instanceof Array && size.length === 2)) return false;
+	if (!(size[0] === parseInt(size[0]) && size[1] === parseInt(size[1]) &&
+		(size[0] % 2 !== 0) && (size[1] % 2 !== 0)))
+		    return false;
 	if (!nodiverse.validate_coords(center)) return false;
-        // TODO: actually implement the draw2Dmap function.
-        // This will invoke draw2Dtile(coords) the relevant ammount of times, and
-        // stitch their results into a map.
-        // For now, return only the center tile (as if size was [1,1])
-        var tile = draw2Dtile(nodiverse,center);
-	var asciitile = tile[0]+"\n"+tile[1]+"\n"+tile[2]+"\n";
-	return asciitile;
+
+	var maparray = [];
+	for (var x=center[0]-(Math.floor(size[0]/2));x<=center[0]+(Math.floor(size[0]/2));x++) {
+		var line = [];
+		for (var y=center[1]-(Math.floor(size[1]/2));y<=center[1]+(Math.floor(size[1]/2));y++) {
+			line.push(draw2Dtile(nodiverse,[x,y,center[2]]));
+		}
+		maparray.push(line);
+	}
+
+	var mapstring = "";
+	for (var i = 0; i < maparray.length; i++) {
+		var line = ["","","",""];
+		for (var j=0; j < maparray[i].length; j++) {
+			line[0] += maparray[i][j][0];
+			line[1] += maparray[i][j][1];
+			line[2] += maparray[i][j][2];
+		}
+		mapstring += line[0]+"\n";
+		mapstring += line[1]+"\n";
+		mapstring += line[2]+"\n";
+	}
+	return mapstring;
     }
     
     // returns an array with each of the three relevant lines (north, center, south)
@@ -180,8 +198,9 @@ module.exports = function() {
 	if (!nodiverse.validate_coords(coords)) return false;
 	var tile = nodiverse.get(coords); 
 	// don't assume there's an actual place at these coordinates
-	if (tile === null) return ["  ","  ","   "];
+        if (typeof tile === 'undefined' || tile === null) return ["  ","  ","   "];
 	var asciitile = [];
+	if (typeof tile.name === 'undefined') tile.name = "X";
 	if (tile.passages & nodiverse.NW) {
 		asciitile[0] = "\ ";
 	} else {
