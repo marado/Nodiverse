@@ -169,7 +169,7 @@ module.exports = function() {
 	if (!nodiverse.validate_coords(center)) return false;
 
 	var maparray = [];
-	for (var y=center[1]-(Math.floor(size[1]/2));y<=center[1]+(Math.floor(size[1]/2));y++) {
+	for (var y=center[1]+(Math.floor(size[1]/2));y>=center[1]-(Math.floor(size[1]/2));y--) {
 		var line = [];
 		for (var x=center[0]-(Math.floor(size[0]/2));x<=center[0]+(Math.floor(size[0]/2));x++) {
 			line.push(draw2Dtile(nodiverse,[x,y,center[2]]));
@@ -222,9 +222,9 @@ module.exports = function() {
 		asciitile[2] = "  ";
 	}
 	if ((tile.passages & nodiverse.S) === nodiverse.S) {
-		asciitile[3] += "| ";
+		asciitile[2] += "| ";
 	} else {
-		asciitile[3] += "  ";
+		asciitile[2] += "  ";
 	}
 	return asciitile;
     }

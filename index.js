@@ -28,6 +28,11 @@ function nodiverse() {
     this.DSW    = Math.pow(2,23);
     this.DS     = Math.pow(2,24);
     this.DSE    = Math.pow(2,25);
+    this.opposites = [
+        [this.NW,this.SE],[this.N,this.S],[this.NE,this.SW],[this.W,this.E],[this.E,this.W],[this.SW,this.NE],[this.S,this.N],[this.SE,this.NW],
+        [this.U,this.D],[this.UNW,this.DSE],[this.UN,this.DS],[this.UNE,this.DSW],[this.UW,this.DE],[this.UE,this.DW],[this.USW,this.DNE],[this.US,this.DN],[this.USE,this.DNW],
+        [this.D,this.U],[this.DNW,this.USE],[this.DN,this.US],[this.DNE,this.USW],[this.DW,this.UE],[this.DE,this.UW],[this.DSW,this.UNE],[this.DS,this.UN],[this.DSE,this.UNW]
+    ];
 }
 
 /* create a place, insert it on Nodiverse */
@@ -37,8 +42,8 @@ nodiverse.prototype.create = function(coords, passages) {
         this.validate_passages(passages) &&
         (this.get(coords) === null)
     ) {
-        this.update_neighbours(coords, passages);
         this.places.push({"coords":coords, "passages":passages});
+        this.update_neighbours(coords, passages);
         return true;
     }
     return false;
@@ -51,28 +56,22 @@ nodiverse.prototype.update_neighbours = function(coords, passages) {
     // * if they have a passage to us and we don't have one to them, close it
     // * if they don't have a passage to us but we have one to them, open it
 
-    var opposites = [
-        [this.NW,this.SE],[this.N,this.S],[this.NE,this.SW],[this.W,this.E],[this.E,this.W],[this.SW,this.NE],[this.S,this.N],[this.SE,this.NW],
-        [this.U,this.D],[this.UNW,this.DSE],[this.UN,this.DS],[this.UNE,this.DSW],[this.UW,this.DE],[this.UE,this.DW],[this.USW,this.DNE],[this.US,this.DN],[this.USE,this.DNW],
-        [this.D,this.U],[this.DNW,this.USE],[this.DN,this.US],[this.DNE,this.USW],[this.DW,this.UE],[this.DE,this.UW],[this.DSW,this.UNE],[this.DS,this.UN],[this.DSE,this.UNW]
-    ];
-
-    for (var opIdx = 0; opIdx < opposites.length; opIdx++) {
-        var neighbourCoords = this.shift_coords(coords,opposites[opIdx][0]);
+    for (var opIdx = 0; opIdx < this.opposites.length; opIdx++) {
+        var neighbourCoords = this.shift_coords(coords,this.opposites[opIdx][0]);
         var neighbour = this.get(neighbourCoords);
         if (
 		(neighbour !== null) && (
-			((passages & opposites[opIdx][0]) === opposites[opIdx][0]) !=
-			((neighbour.passages & opposites[opIdx][1]) === opposites[opIdx][1])
+			((passages & this.opposites[opIdx][0]) === this.opposites[opIdx][0]) !=
+			((neighbour.passages & this.opposites[opIdx][1]) === this.opposites[opIdx][1])
 		)
 	) {
 	    // one of us has a broken passage
-            if ((passages & opposites[opIdx][0]) === opposites[opIdx][0])  {
+            if ((passages & this.opposites[opIdx][0]) === this.opposites[opIdx][0])  {
 		// we have a passage, so the neighbour should have one to us
-                neighbour.passages += opposites[opIdx][1];
+                neighbour.passages += this.opposites[opIdx][1];
             } else {
 		// we don't have a passage, so the neighbour shouldn't have one to us
-                neighbour.passages -= opposites[opIdx][1];
+                neighbour.passages -= this.opposites[opIdx][1];
             }
             this.update(neighbour);
         }
@@ -81,6 +80,9 @@ nodiverse.prototype.update_neighbours = function(coords, passages) {
 
 /* given a set of coordinates and a direction, return the resulting coordinates */
 nodiverse.prototype.shift_coords = function(coords,direction) {
+    // FIXME: this is being done the silly way
+    //        check TalkerNode's .dig command to see how to do it the smart way
+
     var shifted = Object.create(coords);
 
     // E vs W
@@ -99,9 +101,9 @@ nodiverse.prototype.shift_coords = function(coords,direction) {
             (direction & this.UN) || (direction & this.UNW) || (direction & this.UNE) ||
             (direction & this.DN) || (direction & this.DNW) || (direction & this.DNE)) {
         shifted[1] = shifted[1] + 1;
-    } else if ((direction & this.N) || (direction & this.NW) || (direction & this.NE) ||
-            (direction & this.UN) || (direction & this.UNW) || (direction & this.UNE) ||
-            (direction & this.DN) || (direction & this.DNW) || (direction & this.DNE)) {
+    } else if ((direction & this.S) || (direction & this.SW) || (direction & this.SE) ||
+            (direction & this.US) || (direction & this.USW) || (direction & this.USE) ||
+            (direction & this.DS) || (direction & this.DSW) || (direction & this.DSE)) {
         shifted[1] = shifted[1] - 1;
     }
 
