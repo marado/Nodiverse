@@ -194,7 +194,10 @@ nodiverse.prototype.nuke = function(coords) {
         if (this.places[p].coords[0] === coords[0] &&
             this.places[p].coords[1] === coords[1] &&
             this.places[p].coords[2] === coords[2]
-        ) this.places.slice(p);
+        ) {
+		this.places.splice(p,1);
+		return true;
+	}
     }
     return false;
 }
