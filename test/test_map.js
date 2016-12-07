@@ -12,7 +12,12 @@ var nodiverse = require('../');
 	   myplace.name = i.toString();
 	   if (!myverse.update(myplace)) { throw new Error("place update failed!"); }
     }	
+	// print the map, no 'center' argument
 	console.log(myverse.asciimap());
+	// print the map, one tile to the side
+	console.log(myverse.asciimap([1,0,0]));
+	// print the map, center on an empty tile
+	console.log(myverse.asciimap([2,2,0]));
     if ((typeof myverse.asciimap()) !== 'string')
 		throw new Error("Can't properly generate an asciimap!");
 })();

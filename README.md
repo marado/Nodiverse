@@ -34,8 +34,11 @@ The latest stable version of Nodiverse can be installed via npm:
     myverse.geometry="plane";
     myverse.entrypoint=[0,0,0];
     // finally, it might be useful to be able to see a visual representation
-    // of the universe
+    // of the universe...
     console.log(myverse.asciimap());
+    // ...well, maybe you want to see the map of a particular part of the
+    // universe:
+    console.log(myverse.asciimap([1,1,1]));
 ```
 
 #### About the coordinates
