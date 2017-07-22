@@ -18,6 +18,16 @@
  * | / 
  * a - b
  *
+ * But what if there are passages outside the viewable map? We better have this:
+ *
+ *    X   X   X
+ *     \  |  /
+ *      \ | /
+ *    X - X - X
+ *      / | \
+ *     /  |  \
+ *    X   X   X
+ *
  * ...but this doesn't deal with the 'z' dimension... and in a place you can't
  * just go up or down, you can actually go "up northwest"... So, let's extend
  * the notation:
@@ -134,9 +144,13 @@
  * SUMMARY:
  * 
  * Eg of a 2D map:
- *   c - d
- *   | / 
- *   a - b
+ *    X   X   X
+ *     \  |  /
+ *      \ | /
+ *    X - X - X
+ *      / | \
+ *     /  |  \
+ *    X   X   X
  *
  * Eg of a 3D map:
  *
@@ -209,7 +223,12 @@ module.exports = function() {
 	if ((tile.passages & nodiverse.N) === nodiverse.N) {
 		asciitile[0] += "| ";
 	} else {
-		asciitile[0] += "  ";
+		asciitile[0] += " ";
+	}
+	if ((tile.passages & nodiverse.NE) === nodiverse.NE) {
+	    asciitile[0] += "/";
+	} else {
+	    asciitile[0] += " ";
 	}
 	if ((tile.passages & nodiverse.W) === nodiverse.W) {
 		asciitile[1] = "- "+tile.name.substring(0,1) + " ";
@@ -224,7 +243,12 @@ module.exports = function() {
 	if ((tile.passages & nodiverse.S) === nodiverse.S) {
 		asciitile[2] += "| ";
 	} else {
-		asciitile[2] += "  ";
+		asciitile[2] += " ";
+	}
+	if ((tile.passages & nodiverse.SE) === nodiverse.SE) {
+		asciitile[2] += "\\";
+	} else {
+		asciitile[2] += " ";
 	}
 	return asciitile;
     }
