@@ -1,6 +1,6 @@
 {
   "name": "nodiverse",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "3D Universe library",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,6 @@
     "data-structure"
   ],
   "author": "Marcos Marado <mindboosternoori@gmail.com>",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "readmeFilename": "README.md"
 }
