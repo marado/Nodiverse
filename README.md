@@ -39,6 +39,8 @@ The latest stable version of Nodiverse can be installed via npm:
     // ...well, maybe you want to see the map of a particular part of the
     // universe:
     console.log(myverse.asciimap([1,1,1]));
+    // And, behold, you might even want it with ANSI colors!
+    console.log(myverse.asciimap([1,1,1], true));
 ```
 
 #### About the coordinates

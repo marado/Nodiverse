@@ -169,13 +169,25 @@
 
 module.exports = function() {
     this.drawmap = function(nodiverse, dimensions, size, center) {
-        if (dimensions == 2) return draw2Dmap(nodiverse, size, center);
-        if (dimensions == 3) return draw3Dmap(nodiverse, size, center);
+	// to be retrocompatible, if no color argument is provided, then
+	// consider we want an ASCII, not ANSI, map
+	return drawmap(nodiverse, dimensions, size, center, false);
+    }
+
+    this.drawmap = function(nodiverse, dimensions, size, center, color) {
+        if (dimensions == 2) return draw2Dmap(nodiverse, size, center, color);
+        if (dimensions == 3) return draw3Dmap(nodiverse, size, center, color);
         return "Can't draw a map with that number of dimensions...";
     }
-    
-    // returns false if can't draw, an ascii drawing otherwise
+
     this.draw2Dmap = function(nodiverse,size,center) {
+	// to be retrocompatible, if no color argument is provided, then
+	// consider we want an ASCII, not ANSI, map
+	return draw2Dmap(nodiverse,size,center,false);
+    }
+
+    // returns false if can't draw, an ascii drawing otherwise
+    this.draw2Dmap = function(nodiverse,size,center,color) {
 	if (!(typeof size === 'object' && size instanceof Array && size.length === 2)) return false;
 	if (!(size[0] === parseInt(size[0]) && size[1] === parseInt(size[1]) &&
 		(size[0] % 2 !== 0) && (size[1] % 2 !== 0)))
@@ -186,7 +198,7 @@ module.exports = function() {
 	for (var y=center[1]+(Math.floor(size[1]/2));y>=center[1]-(Math.floor(size[1]/2));y--) {
 		var line = [];
 		for (var x=center[0]-(Math.floor(size[0]/2));x<=center[0]+(Math.floor(size[0]/2));x++) {
-			line.push(draw2Dtile(nodiverse,[x,y,center[2]]));
+			line.push(draw2Dtile(nodiverse,[x,y,center[2]],color));
 		}
 		maparray.push(line);
 	}
@@ -208,11 +220,12 @@ module.exports = function() {
     
     // returns an array with each of the three relevant lines (north, center, south)
     // doesn't show what's east of the point (including passages), to ease glueing
-    this.draw2Dtile = function(nodiverse,coords) {
+    this.draw2Dtile = function(nodiverse,coords,color) {
 	if (!nodiverse.validate_coords(coords)) return false;
 	var tile = nodiverse.get(coords); 
 	// don't assume there's an actual place at these coordinates
         if (typeof tile === 'undefined' || tile === null) return ["    ","    ","    "];
+	const chalk = require('chalk');
 	var asciitile = [];
 	if (typeof tile.name !== 'string') tile.name = "X";
 	if ((tile.passages & nodiverse.NW) === nodiverse.NW) {
@@ -230,10 +243,12 @@ module.exports = function() {
 	} else {
 	    asciitile[0] += " ";
 	}
+	var name = tile.name.substring(0,1);
+	if (color) name = chalk.bold(name);
 	if ((tile.passages & nodiverse.W) === nodiverse.W) {
-		asciitile[1] = "- "+tile.name.substring(0,1) + " ";
+		asciitile[1] = "- "+ name + " ";
 	} else {
-		asciitile[1] = "  "+tile.name.substring(0,1) + " ";
+		asciitile[1] = "  "+ name + " ";
 	}
 	if ((tile.passages & nodiverse.SW) === nodiverse.SW) {
 		asciitile[2] = "/ ";
@@ -250,12 +265,18 @@ module.exports = function() {
 	} else {
 		asciitile[2] += " ";
 	}
+	if (color) asciitile.forEach(function(v,k){asciitile[k]=chalk.yellow(v);});
 	return asciitile;
     }
-    
+
     this.draw3Dmap = function(nodiverse,size,center) {
+	// to be retrocompatible, if no color argument is provided, then
+	// consider we want an ASCII, not ANSI, map
+	return draw3Dmap(nodiverse,size,center,false);
+    }
+    this.draw3Dmap = function(nodiverse,size,center,color) {
         // TODO: implement 3D map. 
         // Until then, draw a 2D map instead
-        return draw2Dmap(nodiverse,size,center);
+        return draw2Dmap(nodiverse,size,center,color);
     }
 }

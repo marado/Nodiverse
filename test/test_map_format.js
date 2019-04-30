@@ -19,6 +19,9 @@ var nodiverse = require('../');
 
     // print the map, no 'center' argument
     console.log(myverse.asciimap());
+    // print the same map, but with colors
+    console.log(myverse.asciimap(null,true)); // null center, true color
+
     if ((typeof myverse.asciimap()) !== 'string')
 		throw new Error("Can't properly generate an asciimap!");
 })();

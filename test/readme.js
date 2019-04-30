@@ -25,4 +25,9 @@ var nodiverse = require('../');
     myverse.entrypoint=[0,0,0];
     // finally, it might be useful to be able to see a visual representation of the universe
     console.log(myverse.asciimap());
+    // ...well, maybe you want to see the map of a particular part of the
+    // universe:
+    console.log(myverse.asciimap([1,1,1]));
+    // And, behold, you might even want it with ANSI colors!
+    console.log(myverse.asciimap([1,1,1], true));
 })();

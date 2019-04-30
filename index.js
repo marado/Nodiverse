@@ -204,13 +204,19 @@ nodiverse.prototype.nuke = function(coords) {
 
 /* print an ASCII map */
 nodiverse.prototype.asciimap = function(center) {
+    // to be retrocompatible, if no color argument is provided, then
+    // consider we want an ASCII, not ANSI, map
+    return asciimap(center, false);
+}
+
+nodiverse.prototype.asciimap = function(center, color) {
     // TODO:
-    // There are many arguments that we might want to add here in the future,
-    // and many functionalities. For instance: 
+    // There are many other arguments that we might want to add here in the
+    // future, and many functionalities. For instance:
     // * how big do we want the map to be? 
     // * what "map style" do we want to present? (at least 2D vs 3D)
     if (!this.validate_coords(center)) center = [0,0,0];
-    return drawmap(this, 3, [5,5], center);
+    return drawmap(this, 3, [5,5], center, color);
 }
 
 /* given a place, return array of neighbours */
