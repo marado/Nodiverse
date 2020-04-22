@@ -7,7 +7,7 @@ Standards-Version: 3.9.6
 
 Package: nodiverse
 Architecture: all
-Depends: nodejs, npm, make, ${misc:Depends}
+Depends: nodejs, npm, make, node-chalk, ${misc:Depends}
 Description: 3D Universe Node.js library
  nodiverse is a Node.js library that implements a number of methods needed to
  create, manage, manipulate and use a 3D universe object.
