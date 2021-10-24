@@ -1,6 +1,6 @@
 {
   "name": "nodiverse",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "3D Universe library",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "chalk": ""
+    "chalk": "",
+    "strip-ansi": "<7"
   }
 }

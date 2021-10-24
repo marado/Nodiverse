@@ -167,6 +167,8 @@
  *
  */
 
+const stripAnsi = require('strip-ansi');
+
 module.exports = function() {
     this.drawmap = function(nodiverse, dimensions, size, center) {
 	// to be retrocompatible, if no color argument is provided, then
@@ -243,7 +245,7 @@ module.exports = function() {
 	} else {
 	    asciitile[0] += " ";
 	}
-	var name = tile.name.substring(0,1);
+	var name = stripAnsi(tile.name).substring(0,1);
 	if (color) name = chalk.bold(name);
 	if ((tile.passages & nodiverse.W) === nodiverse.W) {
 		asciitile[1] = "- "+ name + " ";
