@@ -13,7 +13,7 @@ var nodiverse = require('../');
     myverse.create([0,  1,0], myverse.S);
     myverse.create([0, -1,0], myverse.N);
     myverse.create([-1,-1,0], myverse.NE);
-    myverse.create([1, -1,0], myverse.NW);
+    myverse.create([1, -1,0], myverse.NW + myverse.N);
     myverse.create([-1, 1,0], myverse.SE);
     myverse.create([1,  1,0], myverse.SW);
 
