@@ -6,8 +6,8 @@ NODE_PREFIX=debian/nodiverse/usr
 	dh $@
 
 override_dh_auto_build:
-	npm build
-	npm install --dev
+	npm rebuild
+	npm install --include=dev
 
 override_dh_auto_test:
 	npm test
